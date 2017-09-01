@@ -7,7 +7,7 @@ Andrew Innes
 
 9/1/17
 
-<img src="Profile picture" alt="Andrew Innes" height="500" width="250"
+<img src="Profile picture" alt="Andrew Innes" height="500" width="250">
 
 ## Filtering Columns and Rows
 
