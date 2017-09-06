@@ -5,9 +5,7 @@ output: html_document
 
 Andrew Innes
 
-9/1/17
-
-<img src="Profile picture" alt="Andrew Innes" height="500" width="250">
+9/6/17
 
 ## Filtering Columns and Rows
 
@@ -26,3 +24,65 @@ Batting%>%
   filter(teamID=='NYA' & yearID==1927)
 ```
 
+#----------------------------------------
+
+Now we would like to see players from the New York Yankees that hit 40 or more homeruns in a given year. We could run the following code:
+
+```{r}
+Batting %>%
+  select (playerID, yearID, teamID, HR) %>%
+  filter (HR>=40 & teamID=='NYA')
+```
+
+#-----------------------------------------
+
+We can take the same code and switch the filter and select lines.  It does not matter the order it is in.
+
+```{r}
+Batting%>%
+  filter (HR>=40 & teamID=='NYA')%>%
+  select (playerID, yearID, teamID, HR)
+```
+
+#-----------------------------------------
+
+Next we would like to see players that hit over 40 homeruns but had less than 50 strikeouts in a single season.  We could run the following code:
+
+```{r}
+Batting%>%
+  select(playerID,yearID,teamID,HR,SO)%>%
+  filter(HR>40 & SO<60)
+```
+
+#-----------------------------------------
+
+Now we want to see the players from the Phillies that hit over 30 homeruns in the 1970s. We could run the following code:
+
+```{r}
+Batting%>%
+  select(playerID,yearID,teamID,HR)%>%
+  filter(HR>30 & teamID=='PHI' & yearID>=1970 & yearID<=1979)
+```
+
+#---------------------------------------------
+
+#Using Arrange Function
+We would like to see players who hit more than 50 homeruns in a single season with the highest hitting homerun scorers at the top of our list.  To do this we need the arrange function in descending order.  So we could enter the code as follows:
+
+```{r}
+Batting%>%
+  select(playerID,yearID,teamID,HR)%>%
+  filter(HR>50)%>%
+  arrange(desc(HR))
+```
+
+#-------------------------------------
+
+Next we want to arrange players by least amount of strikeouts.  We want to see what players hadd less than 10 strikeouts but more than 400 at bats.  We could use the following code:
+
+```{r}
+Batting%>%
+  select(playerID,yearID,teamID,SO,AB)%>%
+  filter(SO<10 & AB>=400)%>%
+  arrange(SO)
+```
