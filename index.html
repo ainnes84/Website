@@ -121,7 +121,7 @@ $(document).ready(function () {
 
 
 <p>Andrew Innes</p>
-<p>9/6/17</p>
+<p>9/9/17</p>
 <div id="filtering-columns-and-rows" class="section level2">
 <h2>Filtering Columns and Rows</h2>
 <p>When using dplyr, you can filter columns and rows by using select and filter. Let’s look at an example using the Lahman baseball database. We first have to load the Lahman and dplyr packages.</p>
@@ -408,6 +408,93 @@ library(dplyr)</code></pre>
 ## 63 holmeto01   1945    BSN  9 636
 ## 64 boudrlo01   1948    CLE  9 560
 ## 65 mitchda01   1952    CLE  9 511</code></pre>
+</div>
+<div id="section-6" class="section level1">
+<h1>————————————</h1>
+</div>
+<div id="using-grouping" class="section level1">
+<h1>Using Grouping</h1>
+<p>In order to see how many homeruns a player has hit during their whole career we use the group_by function. In this instance we look at the homerun totals for Babe Ruth’s career.</p>
+<pre class="r"><code>Batting%&gt;%
+  filter(playerID=='ruthba01')%&gt;%
+  group_by(playerID)%&gt;%
+  summarize(career_HR=sum(HR))</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   playerID career_HR
+##      &lt;chr&gt;     &lt;int&gt;
+## 1 ruthba01       714</code></pre>
+</div>
+<div id="section-7" class="section level1">
+<h1>———————————</h1>
+<p>Next we decide to look at career homerun totals for players who hit over 600 homeruns in order from most to least.</p>
+<pre class="r"><code>Batting%&gt;%
+  group_by(playerID)%&gt;%
+  summarize(career_HR=sum(HR))%&gt;%
+  filter(career_HR&gt;=600)%&gt;%
+  arrange(desc(career_HR))</code></pre>
+<pre><code>## # A tibble: 8 x 2
+##    playerID career_HR
+##       &lt;chr&gt;     &lt;int&gt;
+## 1 bondsba01       762
+## 2 aaronha01       755
+## 3  ruthba01       714
+## 4 rodrial01       696
+## 5  mayswi01       660
+## 6 griffke02       630
+## 7 thomeji01       612
+## 8  sosasa01       609</code></pre>
+</div>
+<div id="section-8" class="section level1">
+<h1>———————————</h1>
+<p>We want to see the average homerun totals greater than or equal to 30 per season. We can write the code as follows:</p>
+<pre class="r"><code>Batting%&gt;%
+  group_by(playerID)%&gt;%
+  summarize(average_HR=mean(HR))%&gt;%
+  filter(average_HR&gt;=30)%&gt;%
+  arrange(desc(average_HR))</code></pre>
+<pre><code>## # A tibble: 13 x 2
+##     playerID average_HR
+##        &lt;chr&gt;      &lt;dbl&gt;
+##  1 pujolal01   36.93750
+##  2 bondsba01   34.63636
+##  3 mcgwima01   34.29412
+##  4 kinerra01   33.54545
+##  5 aaronha01   32.82609
+##  6 bryankr01   32.50000
+##  7  ruthba01   32.45455
+##  8  sosasa01   32.05263
+##  9 cabremi01   31.85714
+## 10 belleal01   31.75000
+## 11 rodrial01   31.63636
+## 12 schmimi01   30.44444
+## 13 abreujo02   30.33333</code></pre>
+</div>
+<div id="section-9" class="section level1">
+<h1>———————————</h1>
+<p>Finally we want to see any player who has hit over 50 homeruns in a single season after the 1970s. But we only want a players name to display once. We could write code as follow:</p>
+<pre class="r"><code>Batting%&gt;%
+  filter(yearID&gt;=1970)%&gt;%
+  group_by(playerID)%&gt;%
+  summarize(maxHR=max(HR))%&gt;%
+  filter(maxHR&gt;50)%&gt;%
+  select(playerID)</code></pre>
+<pre><code>## # A tibble: 14 x 1
+##     playerID
+##        &lt;chr&gt;
+##  1 bautijo02
+##  2 bondsba01
+##  3 davisch02
+##  4 fieldce01
+##  5 fostege01
+##  6 gonzalu01
+##  7 griffke02
+##  8 howarry01
+##  9 jonesan01
+## 10 mcgwima01
+## 11 ortizda01
+## 12 rodrial01
+## 13  sosasa01
+## 14 thomeji01</code></pre>
 </div>
 
 

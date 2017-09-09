@@ -5,7 +5,7 @@ output: html_document
 
 Andrew Innes
 
-9/6/17
+9/9/17
 
 ## Filtering Columns and Rows
 
@@ -86,3 +86,53 @@ Batting%>%
   filter(SO<10 & AB>=400)%>%
   arrange(SO)
 ```
+
+#------------------------------------
+
+#Using Grouping
+In order to see how many homeruns a player has hit during their whole career we use the group_by function.  In this instance we look at the homerun totals for Babe Ruth's career.
+
+```{r}
+Batting%>%
+  filter(playerID=='ruthba01')%>%
+  group_by(playerID)%>%
+  summarize(career_HR=sum(HR))
+```
+
+#---------------------------------
+
+Next we decide to look at career homerun totals for players who hit over 600 homeruns in order from most to least.
+
+```{r}
+Batting%>%
+  group_by(playerID)%>%
+  summarize(career_HR=sum(HR))%>%
+  filter(career_HR>=600)%>%
+  arrange(desc(career_HR))
+```
+
+#---------------------------------
+
+We want to see the average homerun totals greater than or equal to 30 per season.  We can write the code as follows:
+
+```{r}
+Batting%>%
+  group_by(playerID)%>%
+  summarize(average_HR=mean(HR))%>%
+  filter(average_HR>=30)%>%
+  arrange(desc(average_HR))
+```
+
+#---------------------------------
+
+Finally we want to see any player who has hit over 50 homeruns in a single season after the 1970s.  But we only want a players name to display once.  We could write code as follow:
+
+```{r}
+Batting%>%
+  filter(yearID>=1970)%>%
+  group_by(playerID)%>%
+  summarize(maxHR=max(HR))%>%
+  filter(maxHR>50)%>%
+  select(playerID)
+```
+
